@@ -1,0 +1,50 @@
+/**
+ * Hidden static form blueprints so Netlify can detect forms at build/deploy time.
+ * Visible React forms submit via AJAX to /__forms.html with matching field names.
+ */
+export function NetlifyFormsBlueprints() {
+  return (
+    <div className="hp-field" aria-hidden="true">
+      <form
+        name="salary-secure-waitlist"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="salary-secure-waitlist" />
+        <input name="bot-field" />
+        <input name="name" />
+        <input name="email" />
+        <input name="phone" />
+        <input name="contact_method" />
+        <input name="whatsapp_consent" />
+        <input name="source" />
+        <input name="utm_source" />
+        <input name="utm_medium" />
+        <input name="utm_campaign" />
+        <input name="selected_plan" />
+        <input name="selected_duration" />
+        <input name="estimated_annual_cost" />
+        <input name="monthly_protection" />
+        <input name="willing_to_pay" />
+        <input name="company_name" />
+        <input name="employer_stability_score" />
+        <input name="employer_risk_label" />
+        <input name="risk_multiplier" />
+      </form>
+
+      <form
+        name="salary-secure-contact"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="salary-secure-contact" />
+        <input name="bot-field" />
+        <input name="name" />
+        <input name="email" />
+        <input name="message" />
+      </form>
+    </div>
+  );
+}

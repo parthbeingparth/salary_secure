@@ -1,26 +1,271 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #071a2b;
+  --navy-light: #0a263b;
+  --teal: #1c665e;
+  --teal-soft: #e4f0ef;
+  --ivory: #f7f5ef;
+  --paper: #fcfbf7;
+  --graphite: #171b1e;
+  --slate: #66717a;
+  --border: #dddcd5;
+  --card: #ffffff;
+  --positive: #2f6b55;
+  --positive-soft: #e6f2ec;
+  --warning: #9b6948;
+  --warning-soft: #f7f0e4;
+  --danger-muted: #8c3d3d;
+
+  --background: var(--ivory);
+  --foreground: var(--graphite);
+  --muted: var(--slate);
+  --accent: var(--navy-light);
+  --accent-hover: var(--navy);
+  --accent-soft: #e8eef1;
+
+  --radius: 12px;
+  --max-width: 1180px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-ivory: var(--ivory);
+  --color-paper: var(--paper);
+  --color-graphite: var(--graphite);
+  --color-slate: var(--slate);
+  --color-positive: var(--positive);
+  --color-positive-soft: var(--positive-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger-muted: var(--danger-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+}
+
+/* Netlify honeypot — visually hidden without display:none */
+.hp-field {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+@media (max-width: 767px) {
+  #calculator,
+  #waitlist,
+  #plans,
+  #how-it-works,
+  #why-salary-secure,
+  #waitlist-success {
+    scroll-margin-top: 4.5rem;
+    scroll-margin-bottom: 5.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--navy-light) 18%, white);
+  color: var(--navy);
+}
+
+.container-page {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 1px rgba(7, 29, 43, 0.03);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+/* Allow Tailwind bg-* utilities to override the default card surface */
+.card[class*="bg-navy"],
+.card[class*="bg-graphite"] {
+  background: var(--navy);
+  border-color: color-mix(in srgb, var(--navy) 80%, black);
+  color: #fcfbf7;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--navy-light) 22%, var(--border));
+  box-shadow: 0 8px 24px rgba(7, 29, 43, 0.06);
+}
+
+.section-pad {
+  padding-block: 3.25rem; /* ~52px — mobile story density */
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-block: 5rem; /* ~80px desktop chapters */
+  }
+}
+
+.section-pad-compact {
+  padding-block: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad-compact {
+    padding-block: 3.5rem; /* ~56px for bands/strips */
+  }
+}
+
+.headline-xl {
+  font-size: clamp(2.125rem, 8vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.headline-lg {
+  font-size: clamp(1.75rem, 6vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .headline-xl {
+    font-size: clamp(2.5rem, 10vw, 2.875rem); /* 40–46px */
+    line-height: 1.08;
+  }
+  .headline-lg {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    line-height: 1.12;
+  }
+}
+
+@media (min-width: 768px) {
+  .headline-xl {
+    font-size: clamp(3.75rem, 5vw, 4.75rem); /* ~60–76px */
+  }
+}
+
+/* Horizontal swipe carousels (mobile) */
+.snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-start {
+  scroll-snap-align: start;
+}
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.section-dark {
+  background: var(--navy);
+  color: #f4f1ea;
+}
+
+.section-dark .text-muted {
+  color: rgba(244, 241, 234, 0.68);
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy-light);
+}
+
+.section-dark .eyebrow {
+  color: rgba(244, 241, 234, 0.55);
+}
+
+.display-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.serif-accent {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s ease-out both;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
