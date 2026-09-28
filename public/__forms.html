@@ -6,37 +6,38 @@
   </head>
   <body>
     <!--
-      Static Netlify Forms blueprints for build-time detection.
-      AJAX posts from the Next.js app target this path with
-      application/x-www-form-urlencoded bodies including form-name.
+      Required for Netlify Next.js Runtime v5+:
+      Form detection only scans static HTML in /public — not React pages.
+      AJAX submissions must POST to this file path.
+      See: https://opennext.js.org/netlify/forms
     -->
     <form
       name="salary-secure-waitlist"
       method="POST"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
-      netlify-honeypot="bot-field"
+      hidden
     >
       <input type="hidden" name="form-name" value="salary-secure-waitlist" />
-      <input name="bot-field" />
-      <input name="name" />
-      <input name="email" />
-      <input name="phone" />
-      <input name="contact_method" />
-      <input name="whatsapp_consent" />
-      <input name="source" />
-      <input name="utm_source" />
-      <input name="utm_medium" />
-      <input name="utm_campaign" />
-      <input name="selected_plan" />
-      <input name="selected_duration" />
-      <input name="estimated_annual_cost" />
-      <input name="monthly_protection" />
-      <input name="willing_to_pay" />
-      <input name="company_name" />
-      <input name="employer_stability_score" />
-      <input name="employer_risk_label" />
-      <input name="risk_multiplier" />
+      <input name="bot-field" type="text" />
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <input name="phone" type="text" />
+      <input name="contact_method" type="text" />
+      <input name="whatsapp_consent" type="text" />
+      <input name="source" type="text" />
+      <input name="utm_source" type="text" />
+      <input name="utm_medium" type="text" />
+      <input name="utm_campaign" type="text" />
+      <input name="selected_plan" type="text" />
+      <input name="selected_duration" type="text" />
+      <input name="estimated_annual_cost" type="text" />
+      <input name="monthly_protection" type="text" />
+      <input name="willing_to_pay" type="text" />
+      <input name="company_name" type="text" />
+      <input name="employer_stability_score" type="text" />
+      <input name="employer_risk_label" type="text" />
+      <input name="risk_multiplier" type="text" />
     </form>
 
     <form
@@ -44,13 +45,13 @@
       method="POST"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
-      netlify-honeypot="bot-field"
+      hidden
     >
       <input type="hidden" name="form-name" value="salary-secure-contact" />
-      <input name="bot-field" />
-      <input name="name" />
-      <input name="email" />
-      <input name="message" />
+      <input name="bot-field" type="text" />
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <input name="message" type="text" />
     </form>
   </body>
 </html>

@@ -9,13 +9,13 @@ export const NETLIFY_FORM_WAITLIST = "salary-secure-waitlist";
 export const NETLIFY_FORM_CONTACT = "salary-secure-contact";
 
 /**
- * AJAX post target for Netlify Forms.
+ * AJAX post target for Netlify Forms (Next.js Runtime v5+ / OpenNext).
  *
- * With Next.js on Netlify, POST /__forms.html often 404s (Next handles the
- * route). Netlify docs: POST to "/" with form-name; edge intercepts Forms.
- * Static blueprints in public/__forms.html remain for build-time detection.
+ * Must POST to the static HTML blueprint in /public — not "/".
+ * Detection only scans public/*.html; React data-netlify attributes are ignored.
+ * See: https://opennext.js.org/netlify/forms
  */
-export const NETLIFY_FORMS_ENDPOINT = "/";
+export const NETLIFY_FORMS_ENDPOINT = "/__forms.html";
 
 export type NetlifyFormPayload = Record<
   string,
