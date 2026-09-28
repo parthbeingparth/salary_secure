@@ -165,7 +165,9 @@ export function EmployerRiskInputs({
 
   function onPreset(id: CompanyTypePresetId) {
     setPresetId(id);
-    setAnswers((prev) => ({ ...PRESET_DEFAULTS[id], ...prev }));
+    // Replace answers with this preset’s defaults so changing company type
+    // always updates the stability score (do not keep prior preset answers).
+    setAnswers({ ...PRESET_DEFAULTS[id] });
   }
 
   const showScore = Boolean(companyName.trim() || presetId);
@@ -199,6 +201,7 @@ export function EmployerRiskInputs({
             const v = e.target.value as CompanyTypePresetId | "";
             if (!v) {
               setPresetId(null);
+              setAnswers({});
               return;
             }
             onPreset(v);
