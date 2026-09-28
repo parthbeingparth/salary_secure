@@ -17,6 +17,8 @@ import {
   computeProtectionEstimate,
   estimateAnalyticsProps,
   formatApproxINR,
+  researchPricingRates,
+  roundAnnualCost,
   type ProtectionDurationMonths,
 } from "@/data/pricingConfig";
 import {
@@ -577,6 +579,7 @@ export function DesktopProductStudio() {
         <PlanCompareModal
           onClose={() => setCompareOpen(false)}
           durationMonths={durationMonths}
+          riskMultiplier={riskMultiplier}
         />
       ) : null}
       <div id="plans" className="sr-only" aria-hidden />
@@ -638,14 +641,34 @@ function Bar({
   );
 }
 
+function indicativeAnnualAtCap(
+  tierId: CoverageTierId,
+  monthlyCap: number,
+  months: ProtectionDurationMonths,
+  riskMultiplier: number,
+): number {
+  const maxBenefit = monthlyCap * months;
+  const rate = researchPricingRates[tierId][months];
+  return roundAnnualCost(maxBenefit * rate * riskMultiplier);
+}
+
 function PlanCompareModal({
   onClose,
   durationMonths,
+  riskMultiplier,
 }: {
   onClose: () => void;
   durationMonths: ProtectionDurationMonths;
+  riskMultiplier: number;
 }) {
-  const { selectedTier, setSelectedTier } = useApp();
+  const { selectedTier, setSelectedTier, setDurationMonths } = useApp();
+  const durations: ProtectionDurationMonths[] = [3, 6];
+
+  function selectPlan(tierId: CoverageTierId, months: ProtectionDurationMonths) {
+    setSelectedTier(tierId);
+    setDurationMonths(months);
+    onClose();
+  }
 
   return (
     <div
@@ -656,16 +679,25 @@ function PlanCompareModal({
       onClick={onClose}
     >
       <div
-        className="max-h-[90vh] w-full max-w-3xl overflow-auto rounded-xl border border-border bg-paper p-5 shadow-xl md:p-6"
+        className="max-h-[90vh] w-full max-w-4xl overflow-auto rounded-xl border border-border bg-paper p-5 shadow-xl md:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <h3
-            id="plan-compare-title"
-            className="text-lg font-semibold text-graphite"
-          >
-            Compare all plans · {durationMonths} months
-          </h3>
+          <div>
+            <h3
+              id="plan-compare-title"
+              className="text-lg font-semibold text-graphite"
+            >
+              Compare all plans
+            </h3>
+            <p className="mt-1 text-xs text-slate">
+              3-month and 6-month options · Indicative annual cost at each
+              plan&apos;s monthly maximum
+              {riskMultiplier !== 1
+                ? ` · Includes your employer-risk adjustment (${formatRiskAdjustment(riskMultiplier)})`
+                : ""}
+            </p>
+          </div>
           <button
             type="button"
             className="text-slate hover:text-graphite"
@@ -675,51 +707,94 @@ function PlanCompareModal({
             ✕
           </button>
         </div>
-        <div className="mt-5 overflow-x-auto">
-          <table className="w-full min-w-[560px] text-left text-sm">
-            <thead>
-              <tr className="border-b border-border text-[11px] uppercase tracking-[0.12em] text-slate">
-                <th className="pb-3 font-semibold">Plan</th>
-                <th className="pb-3 font-semibold">Salary %</th>
-                <th className="pb-3 font-semibold">Max / month</th>
-                <th className="pb-3 font-semibold">Max total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coverageTiers.map((tier) => (
-                <tr
-                  key={tier.id}
-                  className={`border-b border-border/70 ${
-                    selectedTier === tier.id ? "bg-ivory/80" : ""
-                  }`}
-                >
-                  <td className="py-3">
-                    <button
-                      type="button"
-                      className="font-semibold text-graphite hover:text-navy"
-                      onClick={() => {
-                        setSelectedTier(tier.id as CoverageTierId);
-                        onClose();
-                      }}
-                    >
-                      {tier.name}
-                    </button>
-                  </td>
-                  <td className="py-3 text-slate">{tier.salaryPercent}%</td>
-                  <td className="py-3 display-num text-graphite">
-                    {formatINR(tier.monthlyCap, true)}
-                  </td>
-                  <td className="py-3 display-num text-graphite">
-                    {formatINR(tier.monthlyCap * durationMonths, true)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+        <div className="mt-5 space-y-7">
+          {durations.map((months) => (
+            <div key={months}>
+              <div className="mb-3 flex items-baseline justify-between gap-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate">
+                  {months} months ·{" "}
+                  {months === 3 ? "Standard protection" : "Extended protection"}
+                </p>
+                {durationMonths === months ? (
+                  <span className="text-[11px] font-medium text-teal">
+                    Current selection
+                  </span>
+                ) : null}
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[640px] text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-[11px] uppercase tracking-[0.12em] text-slate">
+                      <th className="pb-3 font-semibold">Plan</th>
+                      <th className="pb-3 font-semibold">Salary %</th>
+                      <th className="pb-3 font-semibold">Max / month</th>
+                      <th className="pb-3 font-semibold">Max total</th>
+                      <th className="pb-3 font-semibold">
+                        Est. annual cost
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {coverageTiers.map((tier) => {
+                      const annual = indicativeAnnualAtCap(
+                        tier.id,
+                        tier.monthlyCap,
+                        months,
+                        riskMultiplier,
+                      );
+                      const active =
+                        selectedTier === tier.id && durationMonths === months;
+                      return (
+                        <tr
+                          key={`${tier.id}-${months}`}
+                          className={`border-b border-border/70 ${
+                            active ? "bg-ivory/80" : ""
+                          }`}
+                        >
+                          <td className="py-3">
+                            <button
+                              type="button"
+                              className="font-semibold text-graphite hover:text-navy"
+                              onClick={() =>
+                                selectPlan(tier.id as CoverageTierId, months)
+                              }
+                            >
+                              {tier.name}
+                            </button>
+                          </td>
+                          <td className="py-3 text-slate">
+                            {tier.salaryPercent}%
+                          </td>
+                          <td className="py-3 display-num text-graphite">
+                            {formatINR(tier.monthlyCap, true)}
+                          </td>
+                          <td className="py-3 display-num text-graphite">
+                            {formatINR(tier.monthlyCap * months, true)}
+                          </td>
+                          <td className="py-3 display-num font-medium text-graphite">
+                            {formatApproxINR(annual, true)}
+                            <span className="mt-0.5 block text-[11px] font-normal text-slate">
+                              / year
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))}
         </div>
-        <p className="mt-4 text-xs text-slate">
-          Proposed coverage · Indicative research pricing only · Not an insurance
-          quote
+
+        <p className="mt-5 text-xs leading-relaxed text-slate">
+          Proposed coverage · Indicative research pricing only · Not an
+          insurance quote or premium. Annual figures use each plan&apos;s
+          maximum monthly protection × selected duration × research rate
+          {riskMultiplier !== 1 ? " × your employer-risk multiplier" : ""}.
+          Your calculator estimate may be lower if salary is below the plan
+          cap.
         </p>
       </div>
     </div>
