@@ -8,8 +8,14 @@
 export const NETLIFY_FORM_WAITLIST = "salary-secure-waitlist";
 export const NETLIFY_FORM_CONTACT = "salary-secure-contact";
 
-/** Static HTML blueprint Netlify crawls + AJAX post target */
-export const NETLIFY_FORMS_ENDPOINT = "/__forms.html";
+/**
+ * AJAX post target for Netlify Forms.
+ *
+ * With Next.js on Netlify, POST /__forms.html often 404s (Next handles the
+ * route). Netlify docs: POST to "/" with form-name; edge intercepts Forms.
+ * Static blueprints in public/__forms.html remain for build-time detection.
+ */
+export const NETLIFY_FORMS_ENDPOINT = "/";
 
 export type NetlifyFormPayload = Record<
   string,
@@ -50,6 +56,8 @@ export async function submitNetlifyForm(
       body,
     });
 
+    // Netlify Forms returns 200 when accepted. Some Next.js setups may still
+    // return HTML for "/" — treat 2xx as success if form detection is enabled.
     if (!res.ok) {
       return { ok: false, error: "Something went wrong. Please try again." };
     }
