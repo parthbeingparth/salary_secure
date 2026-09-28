@@ -1,14 +1,18 @@
-# Salary Secure — Netlify
+# Salary Secure — Netlify + Next.js App Router
 
 [build]
   command = "npm run build"
+  # Leave publish empty when using the Next.js runtime plugin.
+  # Do NOT set publish = ".next" (that breaks App Router / SSR).
 
-# Use the official Next.js runtime on Netlify (install as a site plugin if needed).
-# Form blueprints live in public/__forms.html and are also rendered in the app layout.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Form blueprints: public/__forms.html + NetlifyFormsBlueprints in layout.
+# Email notifications: configure in Netlify UI → Forms (not here).
 #
-# Email notifications for form submissions are configured in the Netlify UI —
-# never put SMTP credentials or notification secrets in this file.
+# Optional env (Netlify UI → Environment variables):
+#   NEXT_PUBLIC_SITE_URL=https://your-domain.netlify.app
 #
-# Future server-only secrets (WhatsApp Cloud API, Resend, SendGrid, Meta app secrets)
-# belong ONLY in: Netlify Dashboard → Site configuration → Environment variables
-# Never commit them here or expose them as NEXT_PUBLIC_* / VITE_* variables.
+# Future secrets (Resend, WhatsApp API, etc.) belong ONLY in the Netlify UI —
+# never NEXT_PUBLIC_* and never committed here.
