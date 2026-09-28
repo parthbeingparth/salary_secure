@@ -1,18 +1,18 @@
 # Salary Secure — Netlify + Next.js App Router
+#
+# With @netlify/plugin-nextjs, publish must be ".next" (not empty / not ".").
+# Empty publish resolves to the repo root and fails with:
+# "publish directory cannot be the same as the base directory"
 
 [build]
   command = "npm run build"
-  # Leave publish empty when using the Next.js runtime plugin.
-  # Do NOT set publish = ".next" (that breaks App Router / SSR).
+  publish = ".next"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
 # Form blueprints: public/__forms.html + NetlifyFormsBlueprints in layout.
-# Email notifications: configure in Netlify UI → Forms (not here).
+# Email notifications: Netlify UI → Forms (not here).
 #
 # Optional env (Netlify UI → Environment variables):
-#   NEXT_PUBLIC_SITE_URL=https://your-domain.netlify.app
-#
-# Future secrets (Resend, WhatsApp API, etc.) belong ONLY in the Netlify UI —
-# never NEXT_PUBLIC_* and never committed here.
+#   NEXT_PUBLIC_SITE_URL=https://your-site.netlify.app
