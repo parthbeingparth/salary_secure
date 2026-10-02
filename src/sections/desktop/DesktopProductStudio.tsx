@@ -214,10 +214,11 @@ export function DesktopProductStudio() {
       <div className="mx-auto max-w-[1200px]">
         <div className="max-w-xl">
           <h2 className="headline-lg text-graphite">
-            How secure is your financial runway?
+            Estimate your salary insurance
           </h2>
           <p className="mt-2 text-[16px] text-slate">
-            If your salary stopped tomorrow, how long would your savings last?
+            See what proposed layoff salary insurance could cost and cover if
+            your pay stopped tomorrow.
           </p>
         </div>
 
@@ -365,7 +366,7 @@ export function DesktopProductStudio() {
             {/* B. Protection */}
             <div className="mt-7 border-t border-white/15 pt-6">
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">
-                Your protection
+                Your salary insurance
               </p>
               <div className="mt-3 flex rounded-lg border border-white/15 p-1">
                 {coverageTiers.map((t) => (
@@ -444,7 +445,7 @@ export function DesktopProductStudio() {
             {/* 4. Risk-adjusted cost + 5. Affordability */}
             <div className="mt-7 border-t border-white/15 pt-6">
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/50">
-                Estimated protection cost
+                Estimated salary insurance cost
               </p>
 
               {estimate.quoteDisabled ? (
@@ -480,7 +481,7 @@ export function DesktopProductStudio() {
                     </span>
                   </p>
                   <p className="mt-1 text-[11px] text-white/45">
-                    Risk-adjusted protection estimate
+                    Risk-adjusted salary insurance estimate
                   </p>
                   <p className="mt-2 text-sm text-white/60">
                     Monthly equivalent{" "}

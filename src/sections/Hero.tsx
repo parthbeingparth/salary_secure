@@ -33,10 +33,10 @@ export function Hero() {
 
           <div className="mt-8 border-l-2 border-navy/20 pl-4">
             <p className="text-base font-semibold text-graphite md:text-lg">
-              Protect up to 100% of your monthly take-home salary
+              Salary insurance covering up to 100% of your take-home pay
             </p>
             <p className="mt-1 text-sm text-slate">
-              Up to ₹2.5 lakh/month · Up to 3 months
+              Up to ₹2.5 lakh/month · Up to 3 months after an eligible layoff
             </p>
             <p className="mt-2 text-xs text-slate">
               Proposed coverage · Subject to eligibility and insurer approval
@@ -50,7 +50,7 @@ export function Hero() {
                 scrollTo("calculator");
               }}
             >
-              Check My Protection
+              Estimate My Salary Insurance
             </Button>
             <Button
               variant="outline"
@@ -75,7 +75,7 @@ export function Hero() {
         <div className="card border-border/80 bg-paper p-5 shadow-[0_12px_40px_rgba(7,26,43,0.06)] md:p-7">
           <div className="flex items-center justify-between">
             <p className="text-[11px] font-semibold tracking-[0.16em] text-slate">
-              YOUR PROTECTION
+              SALARY INSURANCE
             </p>
             <p className="text-[10px] uppercase tracking-[0.12em] text-teal">
               Illustrative

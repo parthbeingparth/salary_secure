@@ -36,9 +36,9 @@ export function ProposedPlans() {
   return (
     <Section id="plans" className="bg-ivory">
       <div className="mx-auto max-w-2xl text-center">
-        <p className="eyebrow">Protection concepts</p>
+        <p className="eyebrow">Salary insurance concepts</p>
         <h2 className="headline-lg mt-3 text-graphite">
-          Three proposed Salary Secure tiers
+          Three proposed salary insurance tiers
         </h2>
         <p className="mt-3 text-slate">
           Pricing being validated — not displayed as premiums. Tell us what

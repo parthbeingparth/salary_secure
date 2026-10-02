@@ -37,10 +37,10 @@ export function MobilePlans() {
     <section id="plans" className="bg-paper py-12">
       <Container>
         <h2 className="headline-lg text-graphite">
-          What could Salary Secure look like?
+          What could salary insurance look like?
         </h2>
         <p className="mt-2 text-[15px] text-slate">
-          Choose how much of your salary you&apos;d want protected.
+          Choose how much of your salary you&apos;d want covered.
         </p>
 
         <div

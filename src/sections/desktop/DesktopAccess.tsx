@@ -31,7 +31,7 @@ export function DesktopAccess() {
                 Help shape {brand.shortName}.
               </h2>
               <p className="mt-3 max-w-md text-[16px] leading-relaxed text-slate">
-                We&apos;re validating what meaningful income protection should
+                We&apos;re validating what meaningful salary insurance should
                 look like before taking the product to insurers.
               </p>
               <ul className="mt-6 space-y-2 text-sm text-slate">

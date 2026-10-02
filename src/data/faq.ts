@@ -9,7 +9,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "What is Salary Secure?",
     answer:
-      "Salary Secure is currently a market-validation initiative exploring insurer-backed income protection for salaried technology professionals.",
+      "Salary Secure is exploring salary insurance for salaried technology professionals — proposed insurer-backed income that could replace part or all of your take-home pay after an eligible involuntary layoff. It is currently a market-validation initiative, not a live policy.",
   },
   {
     question: "Is Salary Secure an insurance policy?",

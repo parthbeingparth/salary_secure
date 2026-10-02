@@ -23,7 +23,8 @@ export function FinalCta() {
           You should too.
         </h2>
         <p className="mt-4 text-paper/65">
-          Help shape Salary Secure — get early access.
+          Help shape salary insurance for India&apos;s tech workforce — get
+          early access.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Button variant="onDark" onClick={join}>

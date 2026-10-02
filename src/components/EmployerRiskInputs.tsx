@@ -70,6 +70,7 @@ export function EmployerRiskInputs({
   const [presetId, setPresetId] = useState<CompanyTypePresetId | null>(null);
   const [answers, setAnswers] = useState<EmployerQuestionnaire>({});
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [showOptionalStability, setShowOptionalStability] = useState(false);
 
   const enteredTracked = useRef(false);
   const matchTracked = useRef<string | null>(null);
@@ -224,82 +225,98 @@ export function EmployerRiskInputs({
 
       {!datasetHit && questionnaireOpen ? (
         <div className="rounded-xl border border-border bg-ivory/50 p-3.5">
-          <p className="text-[12px] font-semibold text-graphite">
-            Help us estimate employer stability
-          </p>
-          <p className="mt-1 text-[11px] text-slate">
-            Compact research inputs — used only for indicative pricing.
-          </p>
-          <div
-            className={`mt-3 grid gap-3 ${isMobile ? "grid-cols-1" : "sm:grid-cols-2"}`}
+          <button
+            type="button"
+            className="flex w-full items-start justify-between gap-3 text-left"
+            aria-expanded={showOptionalStability}
+            onClick={() => setShowOptionalStability((v) => !v)}
           >
-            <SelectField
-              label="Company size"
-              value={answers.companySize ?? ""}
-              options={COMPANY_SIZE_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "companySize",
-                  id as EmployerQuestionnaire["companySize"],
-                )
-              }
-            />
-            <SelectField
-              label="Company type"
-              value={answers.companyKind ?? ""}
-              options={COMPANY_KIND_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "companyKind",
-                  id as EmployerQuestionnaire["companyKind"],
-                )
-              }
-            />
-            <SelectField
-              label="Last funding"
-              value={answers.fundingRecency ?? ""}
-              options={FUNDING_RECENCY_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "fundingRecency",
-                  id as EmployerQuestionnaire["fundingRecency"],
-                )
-              }
-            />
-            <SelectField
-              label="Layoff history"
-              value={answers.layoffHistory ?? ""}
-              options={LAYOFF_HISTORY_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "layoffHistory",
-                  id as EmployerQuestionnaire["layoffHistory"],
-                )
-              }
-            />
-            <SelectField
-              label="Hiring trend"
-              value={answers.hiringTrend ?? ""}
-              options={HIRING_TREND_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "hiringTrend",
-                  id as EmployerQuestionnaire["hiringTrend"],
-                )
-              }
-            />
-            <SelectField
-              label="Company age"
-              value={answers.companyAge ?? ""}
-              options={COMPANY_AGE_OPTIONS}
-              onChange={(id) =>
-                patchAnswer(
-                  "companyAge",
-                  id as EmployerQuestionnaire["companyAge"],
-                )
-              }
-            />
-          </div>
+            <span>
+              <span className="text-[12px] font-semibold text-graphite">
+                Refine employer stability
+                <span className="ml-1.5 font-normal text-slate">(optional)</span>
+              </span>
+              <span className="mt-1 block text-[11px] text-slate">
+                Skip this — company type alone is enough for indicative pricing.
+              </span>
+            </span>
+            <span className="mt-0.5 shrink-0 text-[12px] text-navy-light">
+              {showOptionalStability ? "Hide" : "Add"}
+            </span>
+          </button>
+
+          {showOptionalStability ? (
+            <div
+              className={`mt-3 grid gap-3 border-t border-border/70 pt-3 ${isMobile ? "grid-cols-1" : "sm:grid-cols-2"}`}
+            >
+              <SelectField
+                label="Company size"
+                value={answers.companySize ?? ""}
+                options={COMPANY_SIZE_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "companySize",
+                    id as EmployerQuestionnaire["companySize"],
+                  )
+                }
+              />
+              <SelectField
+                label="Company type"
+                value={answers.companyKind ?? ""}
+                options={COMPANY_KIND_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "companyKind",
+                    id as EmployerQuestionnaire["companyKind"],
+                  )
+                }
+              />
+              <SelectField
+                label="Last funding"
+                value={answers.fundingRecency ?? ""}
+                options={FUNDING_RECENCY_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "fundingRecency",
+                    id as EmployerQuestionnaire["fundingRecency"],
+                  )
+                }
+              />
+              <SelectField
+                label="Layoff history"
+                value={answers.layoffHistory ?? ""}
+                options={LAYOFF_HISTORY_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "layoffHistory",
+                    id as EmployerQuestionnaire["layoffHistory"],
+                  )
+                }
+              />
+              <SelectField
+                label="Hiring trend"
+                value={answers.hiringTrend ?? ""}
+                options={HIRING_TREND_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "hiringTrend",
+                    id as EmployerQuestionnaire["hiringTrend"],
+                  )
+                }
+              />
+              <SelectField
+                label="Company age"
+                value={answers.companyAge ?? ""}
+                options={COMPANY_AGE_OPTIONS}
+                onChange={(id) =>
+                  patchAnswer(
+                    "companyAge",
+                    id as EmployerQuestionnaire["companyAge"],
+                  )
+                }
+              />
+            </div>
+          ) : null}
         </div>
       ) : null}
 

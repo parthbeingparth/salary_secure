@@ -27,7 +27,7 @@ export function MobileConvert() {
           Help shape {brand.shortName}.
         </h2>
         <p className="mt-2 text-[15px] leading-relaxed text-slate">
-          We&apos;re validating what meaningful income protection should look
+          We&apos;re validating what meaningful salary insurance should look
           like before taking the product to insurers.
         </p>
         <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-slate">

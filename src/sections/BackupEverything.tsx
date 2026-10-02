@@ -36,7 +36,7 @@ export function BackupEverything() {
           {brand.nameLines[1]}
         </p>
         <p className="mx-auto mt-6 max-w-lg text-[17px] leading-relaxed text-slate">
-          {brand.shortName} is exploring income protection designed to give tech
+          {brand.shortName} is exploring salary insurance designed to give tech
           professionals financial breathing room after an eligible involuntary
           layoff.
         </p>

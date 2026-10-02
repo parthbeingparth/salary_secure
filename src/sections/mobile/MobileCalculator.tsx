@@ -185,12 +185,13 @@ export function MobileCalculator() {
   return (
     <section id="calculator" className="bg-paper py-12">
       <Container>
-        <ChapterLabel n="02" label="YOUR RUNWAY" />
+        <ChapterLabel n="02" label="SALARY INSURANCE" />
         <h2 className="headline-lg text-graphite">
-          How secure is your financial runway?
+          Estimate your salary insurance
         </h2>
         <p className="mt-2 text-[15px] text-slate">
-          Protection priced around your salary and estimated employer stability.
+          Proposed layoff salary insurance, priced around your salary and
+          employer stability.
         </p>
 
         <div className="mt-6 space-y-3.5">
@@ -391,7 +392,7 @@ export function MobileCalculator() {
 
               <div className="mt-4 border-t border-border pt-4">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate">
-                  Risk-adjusted protection estimate
+                  Risk-adjusted salary insurance estimate
                 </p>
                 {estimate.quoteDisabled ? (
                   <p className="mt-2 text-sm text-slate">

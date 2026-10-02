@@ -61,8 +61,8 @@ export function DesktopHowItWorks() {
               Simple when it matters.
             </h2>
             <p className="mt-2.5 max-w-md text-[16px] leading-relaxed text-paper/70">
-              {brand.shortName} is designed to provide income protection after an
-              eligible involuntary layoff.
+              {brand.shortName} is exploring salary insurance — proposed income
+              protection after an eligible involuntary layoff.
             </p>
 
             <ol className="mt-6 space-y-0">

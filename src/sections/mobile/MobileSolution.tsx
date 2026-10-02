@@ -56,8 +56,8 @@ export function MobileSolution() {
         <ChapterLabel n="03" label="HOW IT WORKS" dark />
         <h2 className="headline-lg text-paper">Simple when it matters.</h2>
         <p className="mt-2 text-[15px] text-paper/65">
-          {brand.shortName} is designed to provide income protection after an
-          eligible involuntary layoff.
+          {brand.shortName} is exploring salary insurance — proposed income
+          protection after an eligible involuntary layoff.
         </p>
 
         <ol className="mt-8 space-y-0">
