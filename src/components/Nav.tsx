@@ -8,7 +8,7 @@ import { useApp } from "@/components/AppProviders";
 
 const desktopLinks = [
   { href: "why-salary-secure", label: "Why Salary Secure" },
-  { href: "calculator", label: "Your Runway" },
+  { href: "calculator", label: "Estimate" },
   { href: "how-it-works", label: "How It Works" },
   { href: "faq", label: "FAQ" },
 ];
@@ -16,7 +16,7 @@ const desktopLinks = [
 const mobileLinks = [
   { href: "why-salary-secure", label: "Why Salary Secure" },
   { href: "how-it-works", label: "How It Works" },
-  { href: "plans", label: "Coverage" },
+  { href: "calculator", label: "Estimate" },
   { href: "waitlist", label: "Early Access" },
 ];
 
@@ -56,7 +56,7 @@ export function Nav() {
             {brand.nameLines[1]}
           </span>
           <span className="mt-0.5 hidden text-[9px] font-medium tracking-[0.16em] text-slate md:block">
-            INCOME PROTECTION
+            SALARY INSURANCE
           </span>
         </a>
 

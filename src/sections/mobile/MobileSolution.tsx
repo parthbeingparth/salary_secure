@@ -19,7 +19,7 @@ const steps = [
   {
     n: "02",
     title: "Choose protection",
-    body: "Select how much income you want protected.",
+    body: "Select 50%, 75%, or 100% of salary for 3 or 6 months.",
   },
   {
     n: "03",
@@ -117,7 +117,7 @@ export function MobileSolution() {
         </div>
 
         <p className="mt-8 text-center text-[15px] font-medium leading-relaxed text-paper/75">
-          Three months of protection could mean three months to find the right
+          A few months of salary insurance could mean time to find the right
           job — not just the next one.
         </p>
       </Container>

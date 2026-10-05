@@ -48,6 +48,7 @@ export const EXTENDED_DURATION_DISCLAIMER =
   "Extended 6-month protection is being explored as part of market research. Final availability may depend on insurer appetite, underwriting, waiting periods and product approval.";
 
 export type ProtectionEstimate = {
+  monthlyTakeHome: number;
   monthlyProtection: number;
   durationMonths: ProtectionDurationMonths;
   maximumBenefit: number;
@@ -120,8 +121,8 @@ export function formatApproxINR(amount: number, compact = false): string {
  */
 export function computeProtectionEstimate(input: {
   monthlyTakeHome: number;
-  monthlyCommittedExpenses: number;
-  liquidSavings: number;
+  monthlyCommittedExpenses?: number;
+  liquidSavings?: number;
   severance?: number;
   salaryPercent: number;
   monthlyCap: number;
@@ -135,8 +136,8 @@ export function computeProtectionEstimate(input: {
 }): ProtectionEstimate {
   const {
     monthlyTakeHome,
-    monthlyCommittedExpenses,
-    liquidSavings,
+    monthlyCommittedExpenses = 0,
+    liquidSavings = 0,
     severance = 0,
     salaryPercent,
     monthlyCap,
@@ -149,7 +150,7 @@ export function computeProtectionEstimate(input: {
     employerRiskLabel = null,
   } = input;
 
-  const byPercent = Math.round(monthlyTakeHome * (salaryPercent / 100));
+  const byPercent = monthlyTakeHome * (salaryPercent / 100);
   const monthlyProtection =
     monthlyTakeHome <= 0 ? 0 : Math.min(byPercent, monthlyCap);
 
@@ -193,6 +194,7 @@ export function computeProtectionEstimate(input: {
       : null;
 
   return {
+    monthlyTakeHome,
     monthlyProtection,
     durationMonths,
     maximumBenefit,
@@ -228,14 +230,7 @@ export function estimateAnalyticsProps(
 ) {
   return {
     ...extras,
-    monthly_protection: estimate.monthlyProtection,
-    maximum_benefit: estimate.maximumBenefit,
-    research_rate: estimate.researchRate,
-    base_annual_cost: estimate.baseAnnualCost,
-    risk_multiplier: estimate.employerRiskMultiplier,
+    salary: extras.salary,
     estimated_annual_cost: estimate.estimatedAnnualCost,
-    risk_adjusted_annual_cost: estimate.estimatedAnnualCost,
-    monthly_equivalent: estimate.monthlyEquivalent,
-    price_as_salary_percentage: estimate.priceAsSalaryPct,
   };
 }

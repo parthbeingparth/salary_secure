@@ -71,6 +71,35 @@ html {
   border: 0;
 }
 
+.salary-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  outline: none;
+}
+
+.salary-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--navy);
+  border: 3px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(7, 26, 43, 0.25);
+}
+
+.salary-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--navy);
+  border: 3px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(7, 26, 43, 0.25);
+}
+
 @media (max-width: 767px) {
   #calculator,
   #waitlist,

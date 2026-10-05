@@ -23,8 +23,8 @@ const proofs = [
     label: "maximum proposed monthly protection",
   },
   {
-    value: "3 months",
-    label: "maximum proposed protection period",
+    value: "3 or 6 months",
+    label: "proposed protection period",
   },
 ] as const;
 

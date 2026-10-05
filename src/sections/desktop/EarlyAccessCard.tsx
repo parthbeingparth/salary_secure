@@ -36,7 +36,6 @@ type Phase =
  */
 export function EarlyAccessCard() {
   const {
-    researchPrice,
     selectedTier,
     durationMonths,
     lastEstimate,
@@ -46,8 +45,9 @@ export function EarlyAccessCard() {
     willingToPay,
   } = useApp();
   const activeTier = coverageTiers.find((t) => t.id === selectedTier)!;
-  const monthlyAsk = lastEstimate?.monthlyEquivalent ?? researchPrice;
-  const monthlyAskLabel = `₹${monthlyAsk.toLocaleString("en-IN")}`;
+  const annualAsk = lastEstimate?.estimatedAnnualCost ?? 0;
+  const annualAskLabel =
+    annualAsk > 0 ? `₹${annualAsk.toLocaleString("en-IN")}` : null;
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [name, setName] = useState("");
@@ -156,13 +156,8 @@ export function EarlyAccessCard() {
       selected_plan: selectedTier,
       selected_duration: durationMonths,
       estimated_annual_cost: lastEstimate?.estimatedAnnualCost ?? "",
-      monthly_protection:
-        lastEstimate?.monthlyProtection ?? activeTier.monthlyCap,
+      monthly_take_home: lastEstimate?.monthlyTakeHome ?? "",
       willing_to_pay: finalWtp || "",
-      company_name: lastEstimate?.employerCompanyName ?? "",
-      employer_stability_score: lastEstimate?.employerStabilityScore ?? "",
-      employer_risk_label: lastEstimate?.employerRiskLabel ?? "",
-      risk_multiplier: lastEstimate?.employerRiskMultiplier ?? "",
     });
 
     if (!result.ok) {
@@ -179,14 +174,12 @@ export function EarlyAccessCard() {
     track("waitlist_completed", {
       channel: "email",
       has_whatsapp: Boolean(normalizedPhone),
-      displayed_price: monthlyAsk,
+      displayed_price: annualAsk || null,
       willing_to_pay: finalWtp || null,
       duration_months: durationMonths,
       plan: selectedTier,
       estimated_annual_cost: lastEstimate?.estimatedAnnualCost,
-      monthly_equivalent: lastEstimate?.monthlyEquivalent,
-      monthly_protection: lastEstimate?.monthlyProtection,
-      maximum_benefit: lastEstimate?.maximumBenefit,
+      monthly_take_home: lastEstimate?.monthlyTakeHome,
     });
 
     if (finalWtp) setWillingToPay(finalWtp);
@@ -232,8 +225,8 @@ export function EarlyAccessCard() {
           Quick research · {activeTier.name}
         </p>
         <h3 className="mt-3 text-lg font-semibold text-graphite">
-          Would you seriously consider Salary Secure at approximately{" "}
-          {monthlyAskLabel}/month?
+          Would you seriously consider Salary Secure
+          {annualAskLabel ? ` at approximately ${annualAskLabel}/year` : ""}?
         </h3>
         <p className="mt-2 text-xs text-slate">
           Indicative research estimate · Not an insurance quote or premium.

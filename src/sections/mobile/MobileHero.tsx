@@ -1,16 +1,24 @@
 "use client";
 
 import { brand } from "@/lib/brand";
+import { coverageTiers, HERO_EXAMPLE_SALARY } from "@/data/plans";
+import { computeProtectionEstimate, formatApproxINR } from "@/data/pricingConfig";
 import { formatINR } from "@/lib/format";
-import { HERO_EXAMPLE_SALARY } from "@/data/plans";
 import { track } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Layout";
 import { useApp } from "@/components/AppProviders";
 
-const EXAMPLE_MONTHLY = HERO_EXAMPLE_SALARY;
+const EXAMPLE_SALARY = HERO_EXAMPLE_SALARY;
 const EXAMPLE_PERIOD = 3;
-const EXAMPLE_TOTAL = EXAMPLE_MONTHLY * EXAMPLE_PERIOD;
+const exampleTier = coverageTiers.find((t) => t.id === "secure_100")!;
+const exampleEstimate = computeProtectionEstimate({
+  monthlyTakeHome: EXAMPLE_SALARY,
+  salaryPercent: exampleTier.salaryPercent,
+  monthlyCap: exampleTier.monthlyCap,
+  tierId: exampleTier.id,
+  durationMonths: EXAMPLE_PERIOD,
+});
 
 export function MobileHero() {
   const { scrollTo } = useApp();
@@ -30,7 +38,7 @@ export function MobileHero() {
         </h1>
 
         <p className="mt-4 max-w-sm text-[16px] leading-relaxed text-slate">
-          Income protection being designed for India&apos;s tech workforce.
+          Salary insurance being designed for India&apos;s tech workforce.
         </p>
 
         <ul className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-graphite">
@@ -38,11 +46,7 @@ export function MobileHero() {
           <li className="text-border" aria-hidden>
             ·
           </li>
-          <li>Up to ₹2.5L/month</li>
-          <li className="text-border" aria-hidden>
-            ·
-          </li>
-          <li>Up to 3 months</li>
+          <li>3 or 6 months</li>
         </ul>
 
         <div className="mt-6">
@@ -56,7 +60,7 @@ export function MobileHero() {
               scrollTo("calculator");
             }}
           >
-            Check My Protection
+            Estimate My Salary Insurance
           </Button>
           <button
             type="button"
@@ -69,31 +73,17 @@ export function MobileHero() {
 
         <div className="mt-6 rounded-xl border border-border bg-ivory/80 px-4 py-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate">
-            Illustrative example
+            Example · {formatINR(EXAMPLE_SALARY, true)} take-home
           </p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-graphite">
-            <span className="display-num font-semibold">
-              {formatINR(EXAMPLE_MONTHLY, true)} salary
-            </span>
-            <span className="text-slate/50" aria-hidden>
-              →
-            </span>
-            <span className="display-num font-semibold text-navy">
-              {formatINR(EXAMPLE_MONTHLY, true)}/mo
-            </span>
-            <span className="text-slate/50" aria-hidden>
-              →
-            </span>
-            <span className="display-num font-medium">{EXAMPLE_PERIOD} months</span>
-            <span className="text-slate/50" aria-hidden>
-              →
-            </span>
-            <span className="display-num font-semibold">
-              {formatINR(EXAMPLE_TOTAL, true)} total
-            </span>
-          </div>
+          <p className="mt-2 text-sm text-graphite">
+            100% cover for {EXAMPLE_PERIOD} months
+          </p>
+          <p className="display-num mt-1 text-xl font-semibold text-navy">
+            {formatApproxINR(exampleEstimate.estimatedAnnualCost)}
+            <span className="ml-1 text-sm font-normal text-slate">/ year</span>
+          </p>
           <p className="mt-2 text-[11px] text-slate">
-            Proposed coverage · Not a quote
+            Indicative research price · Not a live premium
           </p>
         </div>
       </Container>

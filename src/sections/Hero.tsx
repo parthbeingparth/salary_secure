@@ -1,18 +1,24 @@
 "use client";
 
 import { brand } from "@/lib/brand";
+import { coverageTiers, HERO_EXAMPLE_SALARY } from "@/data/plans";
+import { computeProtectionEstimate, formatApproxINR } from "@/data/pricingConfig";
 import { formatINR } from "@/lib/format";
-import { HERO_EXAMPLE_SALARY } from "@/data/plans";
 import { track } from "@/lib/analytics";
 import { Button } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Layout";
 import { useApp } from "@/components/AppProviders";
 
-const EXAMPLE_CURRENT = 2.8;
-const EXAMPLE_WITH = 5.8;
-const EXAMPLE_MONTHLY = HERO_EXAMPLE_SALARY;
+const EXAMPLE_SALARY = HERO_EXAMPLE_SALARY;
 const EXAMPLE_PERIOD = 3;
-const EXAMPLE_TOTAL = EXAMPLE_MONTHLY * EXAMPLE_PERIOD;
+const exampleTier = coverageTiers.find((t) => t.id === "secure_100")!;
+const exampleEstimate = computeProtectionEstimate({
+  monthlyTakeHome: EXAMPLE_SALARY,
+  salaryPercent: exampleTier.salaryPercent,
+  monthlyCap: exampleTier.monthlyCap,
+  tierId: exampleTier.id,
+  durationMonths: EXAMPLE_PERIOD,
+});
 
 export function Hero() {
   const { scrollTo } = useApp();
@@ -36,7 +42,7 @@ export function Hero() {
               Salary insurance covering up to 100% of your take-home pay
             </p>
             <p className="mt-1 text-sm text-slate">
-              Up to ₹2.5 lakh/month · Up to 3 months after an eligible layoff
+              Choose 3 or 6 months after an eligible layoff
             </p>
             <p className="mt-2 text-xs text-slate">
               Proposed coverage · Subject to eligibility and insurer approval
@@ -86,82 +92,28 @@ export function Hero() {
             <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
               <dt className="text-sm text-slate">Monthly take-home</dt>
               <dd className="display-num text-lg font-semibold text-graphite">
-                {formatINR(EXAMPLE_MONTHLY)}
+                {formatINR(EXAMPLE_SALARY)}
               </dd>
             </div>
             <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-              <dt className="text-sm text-slate">Proposed monthly protection</dt>
-              <dd className="display-num text-lg font-semibold text-navy">
-                {formatINR(EXAMPLE_MONTHLY)}
-                <span className="text-sm font-normal text-slate"> / month</span>
-              </dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-              <dt className="text-sm text-slate">Coverage period</dt>
-              <dd className="display-num text-lg font-semibold text-graphite">
-                {EXAMPLE_PERIOD} months
+              <dt className="text-sm text-slate">Cover</dt>
+              <dd className="text-lg font-semibold text-graphite">
+                100% · {EXAMPLE_PERIOD} months
               </dd>
             </div>
             <div className="flex items-baseline justify-between gap-4">
-              <dt className="text-sm text-slate">Potential total protection</dt>
-              <dd className="display-num text-xl font-semibold text-graphite">
-                {formatINR(EXAMPLE_TOTAL)}
+              <dt className="text-sm text-slate">You pay annually</dt>
+              <dd className="display-num text-xl font-semibold text-navy">
+                {formatApproxINR(exampleEstimate.estimatedAnnualCost)}
               </dd>
             </div>
           </dl>
 
-          <div className="mt-8 space-y-4 rounded-xl bg-ivory/80 p-4">
-            <RunwayBar
-              label="Current financial runway"
-              months={EXAMPLE_CURRENT}
-              max={6}
-              tone="muted"
-            />
-            <RunwayBar
-              label="With Salary Secure"
-              months={EXAMPLE_WITH}
-              max={6}
-              tone="accent"
-            />
-          </div>
-
-          <p className="mt-4 text-center text-[11px] text-slate">
-            Illustrative example only.
+          <p className="mt-6 text-center text-[11px] text-slate">
+            Slide your salary below to see your number.
           </p>
         </div>
       </div>
     </Section>
-  );
-}
-
-function RunwayBar({
-  label,
-  months,
-  max,
-  tone,
-}: {
-  label: string;
-  months: number;
-  max: number;
-  tone: "muted" | "accent";
-}) {
-  const pct = Math.min(100, (months / max) * 100);
-  return (
-    <div>
-      <div className="flex items-baseline justify-between text-xs">
-        <span className="uppercase tracking-[0.12em] text-slate">{label}</span>
-        <span className="display-num font-semibold text-graphite">
-          {months} months
-        </span>
-      </div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-border">
-        <div
-          className={`h-full rounded-full transition-all duration-700 ${
-            tone === "accent" ? "bg-navy" : "bg-slate/40"
-          }`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
   );
 }

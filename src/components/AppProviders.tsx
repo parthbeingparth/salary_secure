@@ -23,7 +23,7 @@ import {
 import type { WillingToPay } from "@/types";
 
 const WTP_STORAGE_KEY = "salary_secure_wtp_response";
-const TIER_STORAGE_KEY = "salary_secure_selected_tier";
+const TIER_STORAGE_KEY = "salary_secure_selected_tier_v2";
 const DURATION_STORAGE_KEY = "salary_secure_duration";
 
 type AppState = {
@@ -51,7 +51,7 @@ let tierCache: CoverageTierId | undefined;
 const tierListeners = new Set<() => void>();
 
 function readTier(): CoverageTierId {
-  if (typeof window === "undefined") return "secure_75";
+  if (typeof window === "undefined") return "secure_100";
   try {
     const raw = localStorage.getItem(TIER_STORAGE_KEY);
     if (raw === "secure_50" || raw === "secure_75" || raw === "secure_100") {
@@ -64,7 +64,7 @@ function readTier(): CoverageTierId {
   } catch {
     /* ignore */
   }
-  return "secure_75";
+  return "secure_100";
 }
 
 function getTierSnapshot(): CoverageTierId {
@@ -173,7 +173,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
   const selectedTier = useSyncExternalStore(
     subscribeTier,
     getTierSnapshot,
-    () => "secure_75" as CoverageTierId,
+    () => "secure_100" as CoverageTierId,
   );
   const durationMonths = useSyncExternalStore(
     subscribeDuration,
@@ -235,12 +235,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
         willingness_response: v,
         plan: selectedTier,
         duration_months: durationMonths,
-        monthly_protection: lastEstimate?.monthlyProtection,
-        maximum_benefit: lastEstimate?.maximumBenefit,
-        research_rate: lastEstimate?.researchRate,
         estimated_annual_cost: lastEstimate?.estimatedAnnualCost,
-        monthly_equivalent: lastEstimate?.monthlyEquivalent,
-        price_as_salary_percentage: lastEstimate?.priceAsSalaryPct,
       });
     },
     [selectedTier, researchPrice, durationMonths, lastEstimate],

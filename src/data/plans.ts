@@ -17,13 +17,16 @@ export type CoverageTier = {
 
 export const PRICE_EXPERIMENT_KEY_PREFIX = "salary_secure_price_variant_";
 
+/** Single ceiling for all cover % so the salary slider still moves price. */
+export const MAX_MONTHLY_PROTECTION = 250000;
+
 export const coverageTiers: CoverageTier[] = [
   {
     id: "secure_50",
     name: "SECURE 50",
     tagline: "Cover the essentials.",
     salaryPercent: 50,
-    monthlyCap: 50000,
+    monthlyCap: MAX_MONTHLY_PROTECTION,
     durationMonths: 3,
     priceVariants: [499, 749, 999],
   },
@@ -32,7 +35,7 @@ export const coverageTiers: CoverageTier[] = [
     name: "SECURE 75",
     tagline: "Protect more of your monthly income.",
     salaryPercent: 75,
-    monthlyCap: 125000,
+    monthlyCap: MAX_MONTHLY_PROTECTION,
     durationMonths: 3,
     researchHighlight: true,
     priceVariants: [999, 1499, 1999],
@@ -42,7 +45,7 @@ export const coverageTiers: CoverageTier[] = [
     name: "SECURE 100",
     tagline: "Full salary protection concept.",
     salaryPercent: 100,
-    monthlyCap: 250000,
+    monthlyCap: MAX_MONTHLY_PROTECTION,
     durationMonths: 3,
     flagship: true,
     priceVariants: [1999, 2999, 3999],
@@ -67,6 +70,13 @@ export const coverageDurationOptions = [3, 6] as const;
 
 /** Default illustrative salary for hero dashboard */
 export const HERO_EXAMPLE_SALARY = 180000;
+
+export const SALARY_SLIDER = {
+  min: 50_000,
+  max: 500_000,
+  step: 5_000,
+  defaultValue: HERO_EXAMPLE_SALARY,
+} as const;
 
 export const salaryBands = [
   "<₹10L",

@@ -59,11 +59,10 @@ export default function PrivacyPage() {
             <p className="mt-2">
               If you join early access or send a contact note, we may collect:
               name; email; optional WhatsApp number and consent (only if you
-              choose to share it); calculator/research metadata such as selected
-              plan, protection duration, estimated annual protection cost,
-              monthly protection amount, and employer-stability research inputs;
-              referral and UTM parameters; and free-text messages you send via
-              the contact form.
+              choose to share it); calculator/research metadata such as monthly
+              take-home, selected plan, protection duration, and estimated
+              annual cost; referral and UTM parameters; and free-text messages
+              you send via the contact form.
             </p>
             <p className="mt-2">
               Name and email are required for early access. WhatsApp is optional

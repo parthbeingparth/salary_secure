@@ -8,7 +8,7 @@ import { useApp } from "@/components/AppProviders";
 export function MobileStickyCta() {
   const { calculatorCompleted, waitlistSubmitted, scrollTo } = useApp();
 
-  let label = "Check My Protection";
+  let label = "See my annual price";
   let target = "calculator";
   let onClick: (() => void) | undefined;
 
