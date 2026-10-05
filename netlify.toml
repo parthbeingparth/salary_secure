@@ -16,3 +16,7 @@
 #
 # Optional env (Netlify UI → Environment variables):
 #   NEXT_PUBLIC_SITE_URL=https://your-site.netlify.app
+#
+# Note on Netlify "error rate": most 404s are automated scanners probing for
+# /.env, /.git, wp-login.php, phpinfo, etc. Those are not app failures.
+# src/proxy.ts returns a cheap 404 for those paths before the page runs.
