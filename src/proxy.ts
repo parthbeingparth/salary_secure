@@ -1,26 +1,41 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Fast-reject common vulnerability scanner paths.
- * Logs showing /.env, /.git, wp-login, phpinfo, etc. are bots — not app bugs.
- * Returning 404 here avoids spinning up the full Next.js page for those probes.
+ * Fast-reject vulnerability-scanner traffic.
+ * Netlify "HTML error %" spikes are almost entirely bots hitting WP/.env/.git
+ * paths — not broken Salary Secure pages.
  */
 const PROBE_PATTERN =
-  /(?:^|\/)(?:\.env|\.git|\.aws|\.npmrc|\.docker|\.claude|\.boto|\.s3cfg|\.amplifyrc)(?:$|[./_-])|(?:^|\/)(?:wp-admin|wp-login|wp-content|wp-config|phpinfo|vendor\/composer|docker-compose|dockerfile|credentials|appsettings|aws-exports|composer\.json|database\.sql|sendgrid\.env|runtime-config|env-config|config\.ya?ml|config\.json|config\.php|config\.js|config\.env)(?:$|[./_-])/i;
+  /(?:^|\/)(?:\.env|\.git|\.aws|\.npmrc|\.docker|\.claude|\.boto|\.s3cfg|\.amplifyrc)(?:$|[./_-])|(?:^|\/)(?:wp(?:-|$)|wordpress|xmlrpc|wlwmanifest|phpinfo|vendor\/composer|docker-compose|dockerfile|credentials|appsettings|aws-exports|composer\.json|database\.sql|sendgrid\.env|runtime-config|env-config|config\.ya?ml|config\.json|config\.php|config\.js|config\.env)(?:$|[./_-])/i;
+
+function normalizePath(pathname: string): string {
+  // Collapse //wordpress/... style scanner paths
+  return pathname.replace(/\/{2,}/g, "/");
+}
 
 function isProbePath(pathname: string): boolean {
-  if (pathname === "/" || pathname.length < 2) return false;
-  // Allow our real public assets and pages.
+  const path = normalizePath(pathname);
+  if (path === "/" || path.length < 2) return false;
+
+  // Real public assets / pages we serve
   if (
-    pathname === "/__forms.html" ||
-    pathname === "/site.webmanifest" ||
-    pathname.startsWith("/favicon") ||
-    pathname.startsWith("/icon-") ||
-    pathname.startsWith("/apple-touch")
+    path === "/__forms.html" ||
+    path === "/site.webmanifest" ||
+    path.startsWith("/favicon") ||
+    path.startsWith("/icon-") ||
+    path.startsWith("/apple-touch")
   ) {
     return false;
   }
-  return PROBE_PATTERN.test(pathname);
+
+  const lower = path.toLowerCase();
+
+  // This app has no PHP/ASP — any such request is a probe
+  if (/\.(?:php|asp|aspx|cgi|jsp)(?:$|\/)/i.test(lower)) {
+    return true;
+  }
+
+  return PROBE_PATTERN.test(path);
 }
 
 export function proxy(request: NextRequest) {
