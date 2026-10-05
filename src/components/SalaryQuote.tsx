@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   coverageTiers,
+  MAX_MONTHLY_PROTECTION,
   SALARY_SLIDER,
   type CoverageTierId,
 } from "@/data/plans";
@@ -119,6 +120,12 @@ export function SalaryQuote({ variant = "desktop" }: Props) {
     ((salary - SALARY_SLIDER.min) /
       (SALARY_SLIDER.max - SALARY_SLIDER.min)) *
     100;
+  const capMarkerPct =
+    ((MAX_MONTHLY_PROTECTION - SALARY_SLIDER.min) /
+      (SALARY_SLIDER.max - SALARY_SLIDER.min)) *
+    100;
+  const coverAtCap = estimate.monthlyProtection >= MAX_MONTHLY_PROTECTION;
+  const salaryPastCap = salary > MAX_MONTHLY_PROTECTION;
 
   const controls = (
     <div className="space-y-7">
@@ -131,27 +138,52 @@ export function SalaryQuote({ variant = "desktop" }: Props) {
             {formatINR(salary)}
           </p>
         </div>
-        <input
-          id="salary-slider"
-          type="range"
-          min={SALARY_SLIDER.min}
-          max={SALARY_SLIDER.max}
-          step={SALARY_SLIDER.step}
-          value={salary}
-          aria-valuemin={SALARY_SLIDER.min}
-          aria-valuemax={SALARY_SLIDER.max}
-          aria-valuenow={salary}
-          aria-valuetext={formatINR(salary)}
-          className="salary-slider mt-4 w-full"
-          style={{
-            background: `linear-gradient(to right, var(--navy) ${fillPct}%, var(--border) ${fillPct}%)`,
-          }}
-          onChange={(e) => onSalaryChange(Number(e.target.value))}
-        />
-        <div className="mt-1.5 flex justify-between text-[11px] text-slate">
+        <div className="relative mt-4">
+          <input
+            id="salary-slider"
+            type="range"
+            min={SALARY_SLIDER.min}
+            max={SALARY_SLIDER.max}
+            step={SALARY_SLIDER.step}
+            value={salary}
+            aria-valuemin={SALARY_SLIDER.min}
+            aria-valuemax={SALARY_SLIDER.max}
+            aria-valuenow={salary}
+            aria-valuetext={formatINR(salary)}
+            className="salary-slider w-full"
+            style={{
+              background: `linear-gradient(to right, var(--navy) ${fillPct}%, var(--border) ${fillPct}%)`,
+            }}
+            onChange={(e) => onSalaryChange(Number(e.target.value))}
+          />
+          <div
+            className="pointer-events-none absolute top-full mt-1 -translate-x-1/2"
+            style={{ left: `${capMarkerPct}%` }}
+          >
+            <span className="block h-1.5 w-px bg-slate/50 mx-auto" aria-hidden />
+            <span className="mt-0.5 block whitespace-nowrap text-[10px] font-medium text-slate">
+              ₹2.5L
+            </span>
+          </div>
+        </div>
+        <div className="mt-5 flex justify-between text-[11px] text-slate">
           <span>{formatINR(SALARY_SLIDER.min, true)}</span>
           <span>{formatINR(SALARY_SLIDER.max, true)}</span>
         </div>
+        {salaryPastCap || coverAtCap ? (
+          <p className="mt-2 text-[12px] leading-relaxed text-navy/80">
+            You can slide higher — proposed cover still tops out at{" "}
+            <span className="font-semibold">₹2.5L/month</span>
+            {tier.salaryPercent < 100
+              ? ` (${tier.salaryPercent}% of take-home, up to that limit)`
+              : ""}
+            .
+          </p>
+        ) : (
+          <p className="mt-2 text-[12px] text-slate">
+            Proposed cover is up to ₹2.5L/month.
+          </p>
+        )}
       </div>
 
       <div>
@@ -224,6 +256,7 @@ export function SalaryQuote({ variant = "desktop" }: Props) {
       </p>
       <p className="mt-2 text-sm text-white/60">
         for {tier.salaryPercent}% salary cover · {durationMonths} months
+        {coverAtCap ? " · max ₹2.5L/mo" : ""}
       </p>
       <p className="mt-5 text-[12px] leading-relaxed text-white/40">
         {PRICE_DISCLAIMER_SHORT}
